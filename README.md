@@ -5,7 +5,7 @@ Stack: Kotlin, XML + ViewBinding, Room (SQLite), simple MVVM/Repository. No netw
 See CLAUDE.md, ARCHITECTURE.md, DATA_RULES.md, DEBUGGING.md.
 
 ## Roadmap
-- Stage 1: data layer + core (this commit)
-- Stage 2: inventory screen (list, search, add/edit/delete dialog)
+- Stage 1: data layer + core (done)
+- Stage 2: inventory screen: list, search, add/edit/delete dialog (done)
 - Stage 3: price calculator
 - Stage 4: dashboard + polish
