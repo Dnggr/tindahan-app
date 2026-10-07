@@ -1,8 +1,8 @@
 package com.example.tindahan.inventory
 
 import android.content.Context
+import android.content.DialogInterface
 import android.view.LayoutInflater
-import androidx.appcompat.app.AlertDialog
 import com.example.tindahan.R
 import com.example.tindahan.core.Money
 import com.example.tindahan.data.ProductEntity
@@ -41,7 +41,7 @@ object ProductDialog {
 
         val dialog = builder.create()
         dialog.show()
-        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
+        dialog.getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener {
             val input = read(context, b)
             if (input != null) {
                 onSave(input)

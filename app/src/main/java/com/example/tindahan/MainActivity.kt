@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import com.example.tindahan.calculator.CalculatorActivity
 import com.example.tindahan.databinding.ActivityMainBinding
 import com.example.tindahan.inventory.InventoryActivity
 import kotlinx.coroutines.launch
@@ -21,6 +22,10 @@ class MainActivity : AppCompatActivity() {
 
         binding.btnInventory.setOnClickListener {
             startActivity(Intent(this, InventoryActivity::class.java))
+        }
+
+        binding.btnCalculator.setOnClickListener {
+            startActivity(Intent(this, CalculatorActivity::class.java))
         }
 
         val repo = (application as TindahanApp).productRepository

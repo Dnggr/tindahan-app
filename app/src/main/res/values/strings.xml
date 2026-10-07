@@ -31,4 +31,21 @@
     <string name="delete">Delete</string>
     <string name="delete_title">Delete product?</string>
     <string name="delete_message">%1$s will be removed permanently.</string>
+
+    <string name="open_calculator">Calculator</string>
+    <string name="calculator_title">Price calculator</string>
+    <string name="hint_product">Product</string>
+    <string name="product_info">%1$s / %2$s · Stock %3$d</string>
+    <string name="hint_quantity">Quantity</string>
+    <string name="add_item">Add item</string>
+    <string name="error_pick_product">Pick a product from the list</string>
+    <string name="error_invalid_quantity">Enter a quantity from 1 to %1$d</string>
+    <string name="empty_cart">No items yet</string>
+    <string name="cart_line_detail">%1$d × %2$s</string>
+    <string name="remove_item">Remove item</string>
+    <string name="total_format">Total: %1$s</string>
+    <string name="hint_cash">Cash (₱)</string>
+    <string name="change_format">Change: %1$s</string>
+    <string name="short_format">Short by %1$s ⚠</string>
+    <string name="clear">Clear</string>
 </resources>
