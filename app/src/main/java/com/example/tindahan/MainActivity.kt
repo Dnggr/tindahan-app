@@ -9,6 +9,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.example.tindahan.calculator.CalculatorActivity
 import com.example.tindahan.databinding.ActivityMainBinding
+import com.example.tindahan.history.SalesHistoryActivity
 import com.example.tindahan.inventory.InventoryActivity
 import com.google.android.material.color.MaterialColors
 import kotlinx.coroutines.launch
@@ -31,6 +32,9 @@ class MainActivity : AppCompatActivity() {
         }
         binding.btnCalculator.setOnClickListener {
             startActivity(Intent(this, CalculatorActivity::class.java))
+        }
+        binding.btnHistory.setOnClickListener {
+            startActivity(Intent(this, SalesHistoryActivity::class.java))
         }
 
         lifecycleScope.launch {

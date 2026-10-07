@@ -16,6 +16,8 @@ import com.example.tindahan.TindahanApp
 import com.example.tindahan.core.Money
 import com.example.tindahan.data.ProductEntity
 import com.example.tindahan.databinding.ActivityCalculatorBinding
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
 
 class CalculatorActivity : AppCompatActivity() {
@@ -23,13 +25,16 @@ class CalculatorActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCalculatorBinding
 
     private val viewModel: CalculatorViewModel by viewModels {
-        CalculatorViewModel.Factory((application as TindahanApp).productRepository)
+        val app = application as TindahanApp
+        CalculatorViewModel.Factory(app.productRepository, app.saleRepository)
     }
 
     private val cartAdapter = CartAdapter { line -> viewModel.removeItem(line.productId) }
 
     /** The product currently picked in the dropdown (null if none, or the text was edited). */
     private var selected: ProductEntity? = null
+
+    private var latestState = CalculatorUiState()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,6 +65,7 @@ class CalculatorActivity : AppCompatActivity() {
 
         binding.btnAdd.setOnClickListener { onAddClicked() }
         binding.etCash.doAfterTextChanged { viewModel.setCash(it?.toString().orEmpty()) }
+        binding.btnComplete.setOnClickListener { onCompleteClicked() }
         binding.btnClear.setOnClickListener {
             viewModel.clear()
             binding.etCash.setText("")
@@ -69,6 +75,7 @@ class CalculatorActivity : AppCompatActivity() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch { viewModel.products.collect { onProducts(it) } }
                 launch { viewModel.uiState.collect { render(it) } }
+                launch { viewModel.events.collect { onEvent(it) } }
             }
         }
     }
@@ -112,7 +119,38 @@ class CalculatorActivity : AppCompatActivity() {
         binding.etQuantity.setText("1")
     }
 
+    private fun onCompleteClicked() {
+        val state = latestState
+        when {
+            state.lines.isEmpty() -> Unit
+            state.cashInvalid -> snack(getString(R.string.error_invalid_price))
+            (state.changeCentavos ?: 0L) < 0L -> snack(getString(R.string.error_cash_short))
+            else -> MaterialAlertDialogBuilder(this)
+                .setTitle(R.string.complete_sale_title)
+                .setMessage(getString(R.string.complete_sale_message, Money.format(state.totalCentavos)))
+                .setNegativeButton(R.string.cancel, null)
+                .setPositiveButton(R.string.complete_sale) { _, _ -> viewModel.completeSale() }
+                .show()
+        }
+    }
+
+    private fun onEvent(event: CalculatorEvent) {
+        when (event) {
+            CalculatorEvent.SaleSaved -> {
+                binding.etCash.setText("") // keep the field in sync with the cleared state
+                snack(getString(R.string.sale_saved))
+            }
+            CalculatorEvent.InvalidCash -> snack(getString(R.string.error_invalid_price))
+            is CalculatorEvent.SaleFailed -> snack(event.message)
+        }
+    }
+
+    private fun snack(message: String) {
+        Snackbar.make(binding.root, message, Snackbar.LENGTH_LONG).show()
+    }
+
     private fun render(state: CalculatorUiState) {
+        latestState = state
         cartAdapter.submitList(state.lines)
         binding.tvEmptyCart.visibility = if (state.lines.isEmpty()) View.VISIBLE else View.GONE
         binding.tvTotal.text = getString(R.string.total_format, Money.format(state.totalCentavos))
@@ -124,6 +162,7 @@ class CalculatorActivity : AppCompatActivity() {
             change >= 0 -> getString(R.string.change_format, Money.format(change))
             else -> getString(R.string.short_format, Money.format(-change))
         }
+        binding.btnComplete.isEnabled = state.lines.isNotEmpty()
         binding.btnClear.isEnabled = state.lines.isNotEmpty() || state.cashText.isNotEmpty()
     }
 

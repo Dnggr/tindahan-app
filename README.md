@@ -9,3 +9,4 @@ See CLAUDE.md, ARCHITECTURE.md, DATA_RULES.md, DEBUGGING.md.
 - Stage 2: inventory screen: list, search, add/edit/delete dialog (done)
 - Stage 3: price calculator: pick product, quantity, running total, cash/change (done)
 - Stage 4: dashboard + polish (done)
+- Stage 5 (V2): Complete sale with stock deduction, sales history (done)

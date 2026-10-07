@@ -11,7 +11,7 @@ Kotlin, Android, XML + ViewBinding, Room/SQLite, MVVM-ish (Activity -> ViewModel
 2. Do not add dependencies unless necessary.
 3. Activities handle UI only. ViewModels handle UI state/actions. Repositories handle data ops. DAOs hold Room queries only.
 4. Money is Long centavos. Never Double.
-5. Calculator must not modify inventory.
+5. PriceCalculator is pure and the calculator screen never writes stock itself. Stock is reduced only by SaleRepository.completeSale (one DB transaction, via SaleDao.recordSale).
 6. Validate input before database writes.
 7. Prefer small files. Do not duplicate business logic.
 

@@ -50,4 +50,19 @@
     <string name="change_format">Change: %1$s</string>
     <string name="short_format">Short by %1$s ⚠</string>
     <string name="clear">Clear</string>
+
+    <string name="complete_sale">Complete sale</string>
+    <string name="complete_sale_title">Complete this sale?</string>
+    <string name="complete_sale_message">Total %1$s. Stock will be reduced.</string>
+    <string name="sale_saved">Sale saved</string>
+    <string name="error_cash_short">Cash is less than the total</string>
+
+    <string name="open_history">Sales history</string>
+    <string name="history_title">Sales history</string>
+    <string name="today_sales">Today: %1$s</string>
+    <string name="empty_sales">No sales yet</string>
+    <string name="sale_number">Sale #%1$d</string>
+    <string name="sale_item_line">%1$d × %2$s — %3$s</string>
+    <string name="cash_format">Cash: %1$s</string>
+    <string name="close">Close</string>
 </resources>

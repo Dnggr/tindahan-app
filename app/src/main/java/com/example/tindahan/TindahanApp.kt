@@ -3,8 +3,10 @@ package com.example.tindahan
 import android.app.Application
 import com.example.tindahan.data.AppDatabase
 import com.example.tindahan.data.ProductRepository
+import com.example.tindahan.data.SaleRepository
 
 class TindahanApp : Application() {
     val database by lazy { AppDatabase.get(this) }
     val productRepository by lazy { ProductRepository(database.productDao()) }
+    val saleRepository by lazy { SaleRepository(database.saleDao()) }
 }
