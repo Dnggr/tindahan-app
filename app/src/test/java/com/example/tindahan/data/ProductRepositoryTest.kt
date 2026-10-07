@@ -2,6 +2,7 @@ package com.example.tindahan.data
 
 import com.example.tindahan.core.ValidationResult
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
@@ -12,10 +13,13 @@ private class FakeDao : ProductDao {
     val items = mutableListOf<ProductEntity>()
     var nextId = 1L
     var updateCalls = 0
+    var lastSearch: String? = null
 
     override fun observeAll(): Flow<List<ProductEntity>> = flowOf(items.toList())
-    override fun search(query: String): Flow<List<ProductEntity>> =
-        flowOf(items.filter { it.name.contains(query, ignoreCase = true) })
+    override fun search(query: String): Flow<List<ProductEntity>> {
+        lastSearch = query
+        return flowOf(items.filter { it.name.contains(query, ignoreCase = true) })
+    }
     override suspend fun getById(id: Long) = items.find { it.id == id }
     override fun observeCount(): Flow<Int> = flowOf(items.size)
     override fun observeLowStockCount(): Flow<Int> = flowOf(items.count { it.isLowStock })
@@ -70,6 +74,15 @@ class ProductRepositoryTest {
         assertEquals(2800L, saved.priceCentavos)
         assertEquals(1L, saved.createdAt)
         assertEquals(9L, saved.updatedAt)
+    }
+
+    @Test fun searchEscapesWildcardsAndSkipsDaoWhenBlank() = runBlocking {
+        repo.products("  50%_off ").first()
+        assertEquals("50\\%\\_off", dao.lastSearch)
+
+        dao.lastSearch = null
+        repo.products("   ").first()
+        assertEquals(null, dao.lastSearch)
     }
 
     @Test fun lowStockIsAtOrBelowThreshold() {

@@ -1,5 +1,6 @@
 package com.example.tindahan.data
 
+import com.example.tindahan.core.SearchQuery
 import com.example.tindahan.core.ValidationResult
 import com.example.tindahan.core.Validators
 import kotlinx.coroutines.flow.Flow
@@ -7,7 +8,7 @@ import kotlinx.coroutines.flow.Flow
 class ProductRepository(private val dao: ProductDao) {
 
     fun products(query: String = ""): Flow<List<ProductEntity>> =
-        if (query.isBlank()) dao.observeAll() else dao.search(query.trim())
+        if (query.isBlank()) dao.observeAll() else dao.search(SearchQuery.escapeLike(query.trim()))
 
     fun productCount(): Flow<Int> = dao.observeCount()
     fun lowStockCount(): Flow<Int> = dao.observeLowStockCount()

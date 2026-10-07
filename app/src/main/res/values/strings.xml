@@ -2,7 +2,9 @@
     <string name="app_name">Tindahan</string>
 
     <string name="open_inventory">Inventory</string>
-    <string name="products_count">Products: %1$d</string>
+    <string name="dashboard_title">Tindahan</string>
+    <string name="products_label">Products</string>
+    <string name="low_stock_label">Low stock</string>
 
     <string name="inventory_title">Inventory</string>
     <string name="search_hint">Search products…</string>

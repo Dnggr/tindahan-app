@@ -11,7 +11,8 @@ interface ProductDao {
     @Query("SELECT * FROM products ORDER BY name COLLATE NOCASE")
     fun observeAll(): Flow<List<ProductEntity>>
 
-    @Query("SELECT * FROM products WHERE name LIKE '%' || :query || '%' ORDER BY name COLLATE NOCASE")
+    @Query("SELECT * FROM products WHERE name LIKE '%' || :query || '%' ESCAPE '\\' ORDER BY name COLLATE NOCASE")
+    /** [query] must already be escaped with SearchQuery.escapeLike. */
     fun search(query: String): Flow<List<ProductEntity>>
 
     @Query("SELECT * FROM products WHERE id = :id")
